@@ -210,154 +210,194 @@
         }
     }
 ?>
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-<div style="display:flex">
-    <div>
-        Четный/нечентный №1
-        <form method="POST" style="display:flex; flex-direction:column;">
-            <select name="chet" style="width:200px">
-                <option value="">Выберите Чет/Нечет</option>
-                <option value="1">Четный</option>
-                <option value="2">Нечетный</option>
-            </select>
-            <input type="submit">
-        </form>
-    </div>
-    <div>
-        День №2
-        <form method="POST" style="display:flex; flex-direction:column;">
-            <select name="day" style="width:200px">
-                <option value="">Выберите день</option>
-                <?php 
-                    foreach($days as $day){
-                        echo("<option value=".$day["day_id"].">".$day["name"]."</option>");
-                    }
-                ?>
-            </select>
-            <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
-            <input type="submit">
-        </form>
-    </div>
-    <div>
-        Пара №3
-        <form method="POST" style="display:flex; flex-direction:column;">
-            <select name="time" style="width:200px">
-                <option value="">Выберите пару</option>
-                <?php 
-                    foreach($times as $time){
-                        echo("<option value=".$time["time_id"].">".$time["start_time"]."-".$time["end_time"]."</option>");
-                    }
-                ?>
-            </select>
-            <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
-            <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
-            <input type="submit">
-        </form>
-    </div>
-    <div>
-        Преподаватель №4
-        <form method="POST" style="display:flex; flex-direction:column;">
-            <select name="teacher" style="width:200px">
-                <option value="">Выберите преподавателя</option>
-                <?php 
-                    foreach($teachers as $teacher){
-                        echo("<option value=".$teacher["teacher_id"].">".$teacher["name"]."</option>");
-                    }
-                ?>
-            </select>
-            <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
-            <input type="hidden" name="time" value=<?php echo($_POST["time"]); ?>>
-            <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
-            <input type="submit">
-        </form>
-    </div>
-    <div>
-        Группа №5
-        <form method="POST" style="display:flex; flex-direction:column;">
-            <select name="group" style="width:200px">
-                <option value="">Выберите учебную группу</option>
-                <?php 
-                    foreach($groups as $group){
-                        echo("<option value=".$group["study_group_id"].">".$group["name"]."</option>");
-                    }
-                ?>
-            </select>
-            <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
-            <input type="hidden" name="time" value=<?php echo($_POST["time"]); ?>>
-            <input type="hidden" name="teacher" value=<?php echo($_POST["teacher"]); ?>>
-            <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
-            <input type="submit">
-        </form>
-    </div>
-    <div>
-        Предмет №6
-        <form method="POST" style="display:flex; flex-direction:column;">
-            <select name="subject" style="width:200px">
-                <option value="">Выберите предмет</option>
-                <?php 
-                    foreach($subjects as $subject){
-                        echo("<option value=".$subject["subject_id"].">".$subject["subject_name"].", Тип: ".$subject["type"]."</option>");
-                    }
-                ?>
-            </select>
-            <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
-            <input type="hidden" name="time" value=<?php echo($_POST["time"]); ?>>
-            <input type="hidden" name="teacher" value=<?php echo($_POST["teacher"]); ?>>
-            <input type="hidden" name="group" value=<?php echo($_POST["group"]); ?>>
-            <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
-            <input type="submit">
-        </form>
-    </div>
-    <div>
-        Аудитория №7
-        <form method="POST" style="display:flex; flex-direction:column;">
-            <select name="room" style="width:200px">
-                <option value="">Выберите аудиторию</option>
-                <?php 
-                    foreach($rooms as $room){
-                        echo("<option value=".$room["room_id"].">".$room["number"]."</option>");
-                    }
-                ?>
-            </select>
-            <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
-            <input type="hidden" name="time" value=<?php echo($_POST["time"]); ?>>
-            <input type="hidden" name="teacher" value=<?php echo($_POST["teacher"]); ?>>
-            <input type="hidden" name="group" value=<?php echo($_POST["group"]); ?>>
-            <input type="hidden" name="subject" value=<?php echo($_POST["subject"]); ?>>
-            <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
-            <input type="submit">
-        </form>
-    </div>
-</div>
+<body>
+    <nav>
 
-<?php
-    if($_POST["chet"] == 1){
-        echo("<p>Четный/Нечетный: Четный</p>");
-    }
-    else if($_POST["chet"] == 2){
-        echo("<p>Четный/Нечетный: Нечетный</p>");
-    }
-    else{
-        echo("<p>Четный/Нечетный: </p>");
-    }
-    echo("<p>Выбранный день: ".get_day($conn, $_POST["day"])."</p>");
-    echo("<p>Выбранная пара: ".get_time($conn, $_POST["time"])."</p>");
-    echo("<p>Выбранный преподаватель: ".get_teacher($conn, $_POST["teacher"])."</p>");
-    echo("<p>Выбранная группа: ".get_group($conn, $_POST["group"]));
-    $subj = get_subject($conn, $_POST["subject"]);
-    echo("<p>Выбранный предмет: ".$subj["subject_name"].", Тип: ".$subj["type"]);
-    echo("<p>Выбранная аудитория: ".get_room($conn, $_POST["room"]));
-    if($_POST["room"]){
-        echo("<form method='POST' action='add.php'>
-                <input type='submit' value='Внести в расписание'>
-                <input type='hidden' name='chet' value=".$_POST["chet"].">
-                <input type='hidden' name='time' value=".$_POST["time"].">
-                <input type='hidden' name='teacher' value=".$_POST["teacher"].">
-                <input type='hidden' name='group' value=".$_POST["group"].">
-                <input type='hidden' name='subject' value=".$_POST["subject"].">
-                <input type='hidden' name='day' value=".$_POST["day"].">
-                <input type='hidden' name='room' value=".$_POST["room"].">
-            </form>"
-        );
-    }
-?>
+    <ul>
+        <li>
+            <a href="addPage.php">Админ панель</a>
+        </li>
+
+        <li>
+            <a href="index.php">Расписание</a>
+        </li>
+    </ul>
+
+    </nav>
+
+    <main class="admin_main flex">
+        <div class="choose flex">
+            <h1 class="choose_title">Выбор параметров для пары</h1>
+            <div>
+                Четный/нечентный №1
+                <form method="POST">
+                    <select name="chet" style="width:200px">
+                        <option value="">Выберите Чет/Нечет</option>
+                        <option value="1">Четный</option>
+                        <option value="2">Нечетный</option>
+                    </select>
+                    <input type="submit">
+                </form>
+            </div>
+            <div>
+                День №2
+                <form method="POST">
+                    <select name="day" style="width:200px">
+                        <option value="">Выберите день</option>
+                        <?php 
+                            foreach($days as $day){
+                                echo("<option value=".$day["day_id"].">".$day["name"]."</option>");
+                            }
+                        ?>
+                    </select>
+                    <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
+                    <input type="submit">
+                </form>
+            </div>
+            <div>
+                Пара №3
+                <form method="POST">
+                    <select name="time" style="width:200px">
+                        <option value="">Выберите пару</option>
+                        <?php 
+                            foreach($times as $time){
+                                echo("<option value=".$time["time_id"].">".$time["start_time"]."-".$time["end_time"]."</option>");
+                            }
+                        ?>
+                    </select>
+                    <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
+                    <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
+                    <input type="submit">
+                </form>
+            </div>
+            <div>
+                Преподаватель №4
+                <form method="POST">
+                    <select name="teacher" style="width:200px">
+                        <option value="">Выберите преподавателя</option>
+                        <?php 
+                            foreach($teachers as $teacher){
+                                echo("<option value=".$teacher["teacher_id"].">".$teacher["name"]."</option>");
+                            }
+                        ?>
+                    </select>
+                    <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
+                    <input type="hidden" name="time" value=<?php echo($_POST["time"]); ?>>
+                    <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
+                    <input type="submit">
+                </form>
+            </div>
+            <div>
+                Группа №5
+                <form method="POST">
+                    <select name="group" style="width:200px">
+                        <option value="">Выберите учебную группу</option>
+                        <?php 
+                            foreach($groups as $group){
+                                echo("<option value=".$group["study_group_id"].">".$group["name"]."</option>");
+                            }
+                        ?>
+                    </select>
+                    <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
+                    <input type="hidden" name="time" value=<?php echo($_POST["time"]); ?>>
+                    <input type="hidden" name="teacher" value=<?php echo($_POST["teacher"]); ?>>
+                    <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
+                    <input type="submit">
+                </form>
+            </div>
+            <div>
+                Предмет №6
+                <form method="POST">
+                    <select name="subject" style="width:200px">
+                        <option value="">Выберите предмет</option>
+                        <?php 
+                            foreach($subjects as $subject){
+                                echo("<option value=".$subject["subject_id"].">".$subject["subject_name"].", Тип: ".$subject["type"]."</option>");
+                            }
+                        ?>
+                    </select>
+                    <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
+                    <input type="hidden" name="time" value=<?php echo($_POST["time"]); ?>>
+                    <input type="hidden" name="teacher" value=<?php echo($_POST["teacher"]); ?>>
+                    <input type="hidden" name="group" value=<?php echo($_POST["group"]); ?>>
+                    <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
+                    <input type="submit">
+                </form>
+            </div>
+            <div>
+                Аудитория №7
+                <form method="POST">
+                    <select name="room" style="width:200px">
+                        <option value="">Выберите аудиторию</option>
+                        <?php 
+                            foreach($rooms as $room){
+                                echo("<option value=".$room["room_id"].">".$room["number"]."</option>");
+                            }
+                        ?>
+                    </select>
+                    <input type="hidden" name="chet" value=<?php echo($_POST["chet"]); ?>>
+                    <input type="hidden" name="time" value=<?php echo($_POST["time"]); ?>>
+                    <input type="hidden" name="teacher" value=<?php echo($_POST["teacher"]); ?>>
+                    <input type="hidden" name="group" value=<?php echo($_POST["group"]); ?>>
+                    <input type="hidden" name="subject" value=<?php echo($_POST["subject"]); ?>>
+                    <input type="hidden" name="day" value=<?php echo($_POST["day"]); ?>>
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
+
+        <div class="table flex">
+            <h1 class="table_title">Выбранные параметры</h1>
+            <?php
+                echo("<div class='t_item flex'>");
+                if($_POST["chet"] == 1){
+                    echo("<div class='left_t'>1. Тип</div><div class='right_t'>Четный</div>");
+                }
+                else if($_POST["chet"] == 2){
+                    echo("<div class='left_t'>1. Тип</div><div class='right_t'>Нечетный</div>");
+                }
+                else{
+                    echo("<div class='left_t'>1. Тип</div><div class='right_t'></div>");
+                }
+                echo("</div>");
+                echo("<div class='t_item flex'>");
+                echo("<div class='left_t'>2. День</div><div class='right_t'>".get_day($conn, $_POST["day"])."</div>");
+                echo("</div>");
+                echo("<div class='t_item flex'>");
+                echo("<div class='left_t'>3. Пара</div><div class='right_t'>".get_time($conn, $_POST["time"])."</div>");
+                echo("</div>");
+                echo("<div class='t_item flex'>");
+                echo("<div class='left_t'>4. Преподаватель</div><div class='right_t' style='align-items:center'>".get_teacher($conn, $_POST["teacher"])."</div>");
+                echo("</div>");
+                echo("<div class='t_item flex'>");
+                echo("<div class='left_t'>5. Группа</div><div class='right_t'>".get_group($conn, $_POST["group"])."</div>");
+                echo("</div>");
+                $subj = get_subject($conn, $_POST["subject"]);
+                echo("<div class='t_item flex'>");
+                echo("<div class='left_t'>6. Предмет</div><div class='right_t'>".$subj["subject_name"].", Тип: ".$subj["type"]."</div>");
+                echo("</div>");
+                echo("<div class='t_item flex'>");
+                echo("<div class='left_t'>7. Аудитория</div><div class='right_t'>".get_room($conn, $_POST["room"])."</div>");
+                echo("</div>");
+                if($_POST["room"]){
+                    echo("<form method='POST' action='add.php'>
+                            <input type='submit' value='Внести в расписание'>
+                            <input type='hidden' name='chet' value=".$_POST["chet"].">
+                            <input type='hidden' name='time' value=".$_POST["time"].">
+                            <input type='hidden' name='teacher' value=".$_POST["teacher"].">
+                            <input type='hidden' name='group' value=".$_POST["group"].">
+                            <input type='hidden' name='subject' value=".$_POST["subject"].">
+                            <input type='hidden' name='day' value=".$_POST["day"].">
+                            <input type='hidden' name='room' value=".$_POST["room"].">
+                        </form>"
+                    );
+                }
+            ?>
+        </div>
+    </main>
+</body>

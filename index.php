@@ -54,12 +54,9 @@
 </head>
 <body>
     <nav>
-        <a href="#">
-            <img src="img/schedule.svg" class="logo">
-        </a>
-        <form method="POST" action="index.php">
-            <input type="submit" style="width:50px" value="Чет" name="chet">
-            <input type="submit" style="width:50px" value="Нечет" name="chet">
+        <form method="POST" action="index.php" style="display:flex; flex-direction:column">
+            <input type="submit" style="width:100px" value="Чет" name="chet">
+            <input type="submit" style="width:100px" value="Нечет" name="chet">
             <input type='hidden' name='group' value=<?php echo($_POST["group"]) ?>>
         </form>
         <form method="POST" action="index.php">
